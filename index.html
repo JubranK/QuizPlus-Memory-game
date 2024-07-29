@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Game by Jubran</title>
+    <link
+      rel="icon"
+      href="icon.jpeg"
+      type="image/jpeg"
+      width="30px"
+      height="30px"
+    />
+    <link rel="stylesheet" href="MainPageStyling.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="flex">
+        <div class="player-container" id="player1-container">
+          <img
+            src="player2.jpeg"
+            alt="a player img"
+            class="player-img"
+            width="30px"
+            height="30px"
+          />
+          <div class="pen-name">
+            <p class="player-name">Player1</p>
+          </div>
+        </div>
+        <img
+          src="memory.jpg"
+          alt="a memory icon img"
+          class="memory-img"
+          width="30px"
+          height="30px"
+        />
+        <div class="player-container" id="player2-container">
+          <img
+            src="player2.jpeg"
+            alt="a player img"
+            class="player-img"
+            width="30px"
+            height="30px"
+          />
+          <div class="pen-name">
+            <p class="player-name">Player2</p>
+          </div>
+        </div>
+      </div>
+      <div class="time-startgame-container">
+        <p id="player1-score">Player1 score: 0</p>
+        <div class="startbutton-timer">
+          <button id="startgame-button">Start Game</button>
+          <div id="time"></div>
+        </div>
+        <p id="player2-score">Player2 score: 0</p>
+      </div>
+      <div class="grid-container" id="grid-container"></div>
+    </div>
+
+    <script src="mainPage.js"></script>
+  </body>
+</html>
