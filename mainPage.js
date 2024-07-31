@@ -1,3 +1,10 @@
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabaseUrl = "https://lzompqhjraehtoldmshf.supabase.co";
+const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6b21wcWhqcmFlaHRvbGRtc2hmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIyNTY3MDYsImV4cCI6MjAzNzgzMjcwNn0.8u0HsP9LoMZn01afEB6P0pxHVhrSBSJ8Py1Sam5B74k";
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 const timeValue = document.getElementById("time");
 const startGameButton = document.getElementById("startgame-button");
 const gridContainer = document.getElementById("grid-container");
@@ -108,7 +115,7 @@ function togglePlayer() {
 
 // show the number ... flip the card
 function showNumber(event) {
-  console.log(event);
+  //console.log(event);
   const target = event.target.closest(".grid-item");
   if (
     target &&
@@ -190,23 +197,15 @@ function checkGameEnd() {
       winner = "Player 1";
     } else if (player2Score > player1Score) {
       winner = "Player 2";
-    } else {
-      winner = "It's a tie!";
     }
 
-    // session storage
-    // Store results in session storage ...by sessionStorage.setItem
-    sessionStorage.setItem("winner", winner); //"winner" is the key and so on
-    sessionStorage.setItem("player1Score", player1Score);
-    sessionStorage.setItem("player2Score", player2Score);
-
-    // session storage
-    // Store the actions array in session storage
-    sessionStorage.setItem("actions", JSON.stringify(actions)); // converted to json string , because its the only method to store objects or arrays on the session storage.
-    // this method return a string, so we need to convert it back to javascript array using parse ... as shown in line 236 in displayActions() function
+    // Save the results to the database
+    saveResultsToDatabase(winner, player1Score, player2Score, actions);
 
     // Go to the result page to show the result
-    window.location.href = "ResultPage.html";
+    setTimeout(function () {
+      window.location.href = "ResultPage.html";
+    }, 500);
   }
 }
 
@@ -243,18 +242,58 @@ function resetGame() {
   }
 
   actions = []; // Clear the actions array
-  sessionStorage.removeItem("actions"); // remove the actions from session storage ("actions" is the key)
 
   gridContainer.addEventListener("click", showNumber);
 }
 
-// Display actions from session storage
-function displayActions() {
-  const storedActions = JSON.parse(sessionStorage.getItem("actions") || "[]"); // to convert it back to array
-  if (storedActions.length > 0) {
-    console.log("Actions:");
-    storedActions.forEach((action) => console.log(action));
+// Save results to the database......................................................................................................................
+async function saveResultsToDatabase(
+  winner,
+  player1Score,
+  player2Score,
+  actions
+) {
+  console.log("Saving results to database...");
+
+  // Insert into the game table
+  const { data: gameData, error: gameError } = await supabase
+    .from("game")
+    .insert([
+      {
+        winner: winner,
+        player1_score: player1Score,
+        player2_score: player2Score,
+      },
+    ])
+    .select();
+
+  if (gameError) {
+    console.error("Error saving game data to database:", gameError);
+    return;
+  }
+
+  console.log("Game data saved to database:", gameData);
+  const gameId = gameData[0].id;
+
+  const actionsData = actions.map((action) => {
+    const [player_name, cards_number, success] = action.split("|");
+    return {
+      game_id: gameId,
+      player_name: player_name,
+      cards_number: cards_number,
+      success: success === "True",
+    };
+  });
+
+  // Insert into the actions table
+  const { data: actionsDataResponse, error: actionsError } = await supabase
+    .from("actions")
+    .insert(actionsData);
+
+  if (actionsError) {
+    console.error("Error saving actions data to database:", actionsError);
   } else {
-    console.log("No actions recorded.");
+    console.log("Actions data saved to database:", actionsDataResponse);
+    sessionStorage.setItem("gameId", gameId);
   }
 }
