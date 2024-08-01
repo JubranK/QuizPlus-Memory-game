@@ -1,0 +1,283 @@
+body {
+  background-color: rgb(255, 255, 255);
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
+
+.container {
+  width: 70%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto auto;
+  box-sizing: border-box;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.memory-img-main {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: 20%;
+  height: auto;
+}
+
+.player-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 0;
+}
+
+.player-img {
+  width: 8vw;
+  height: 8vw;
+}
+
+.pen-name {
+  display: flex;
+  align-items: center;
+  height: 5vw;
+}
+
+.pen-name > p {
+  font-size: 4vw;
+  font-weight: bolder;
+  color: rgb(0, 0, 0);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, auto);
+  gap: 5px;
+  width: 100%;
+}
+
+.grid-item {
+  border: 2px solid black;
+  height: 17vh;
+  width: auto;
+  perspective: 1000px;
+}
+
+.grid-item-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.grid-item.flipped .grid-item-inner {
+  transform: rotateY(180deg);
+}
+
+.grid-item-front,
+.grid-item-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.grid-item-front {
+  background-image: url("Images/itemBack.jpeg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.grid-item-back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  transform: rotateY(180deg);
+}
+
+.startbutton-timer {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-startgame-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+#startgame-button {
+  font-weight: bolder;
+  font-size: 2vw;
+  background: #db1515;
+  color: #000000;
+  border-radius: 25px;
+  width: 15vw;
+}
+
+#time {
+  margin-left: 10px;
+  margin-top: 2px;
+  font-weight: bolder;
+  font-size: 2vw;
+}
+
+#player1-score,
+#player2-score {
+  font-size: 1.5vw;
+  font-weight: bold;
+  color: #333;
+  padding: 5px 10px;
+  border: 2px solid #db1515;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+}
+
+.active .player-name {
+  color: rgb(4, 194, 13);
+}
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+.res-container {
+  width: 70%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+.memory-img-result {
+  width: 18vw;
+  height: auto;
+}
+
+.result {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result > img {
+  margin-bottom: 10px;
+}
+
+.result > p {
+  font-size: 2.5vw;
+  font-weight: bolder;
+}
+
+.history-table .table {
+  width: 100%;
+  max-height: 185px;
+  overflow-y: auto;
+}
+
+.history-table > p {
+  font-size: 3vw;
+  margin-right: 25vw;
+  font-weight: bold;
+  color: rgb(11, 24, 216);
+  text-align: left;
+}
+
+.history-table .table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+  padding: 0.8vw;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.history-table th {
+  width: 22vw;
+  font-size: 2.3vw;
+  background-color: #f4f4f4;
+  position: sticky;
+  top: 0;
+}
+
+.history-table td {
+  font-size: 2.3vw;
+  font-weight: bolder;
+}
+
+.middle-th {
+  width: 100vw;
+}
+
+.winner {
+  color: rgb(11, 24, 216);
+}
+
+.score {
+  color: rgb(11, 24, 216);
+}
+
+.history-table .table {
+  background-color: rgb(255, 255, 255);
+}
+
+/*Media query*/
+@media only screen and (min-width: 700px) {
+  .grid-container {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, auto);
+  }
+  .memory-img-result {
+    width: 12vw;
+    height: auto;
+  }
+
+  .result > p {
+    font-size: 1.6vw;
+    font-weight: bolder;
+  }
+
+  .history-table > p {
+    font-size: 2vw;
+  }
+
+  .history-table {
+    width: 100%;
+    max-height: 245px;
+  }
+
+  .history-table th {
+    width: 22vw;
+    font-size: 1.5vw;
+    background-color: #f4f4f4;
+    position: sticky;
+    top: 0;
+  }
+
+  .history-table td {
+    font-size: 1.5vw;
+    font-weight: bolder;
+  }
+}
